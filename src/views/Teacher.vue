@@ -11,34 +11,33 @@
     </header>
     <div class="cxy_base">
       <div>
-        <img :src="list.avatar" alt="" />
+        <img :src="list.teacher.avatar" alt="" style="margin-right:0.2rem"/>
         <div class="tea_title">
-          <p>{{ list.real_name }}</p>
+            <p>
+              <span>{{list.teacher.real_name}}</span>
+              <span>{{list.teacher.level_name}}</span>
+            </p>
+            <p>
+              <span style="margin-right:0.2rem;">男</span>
+              <span>{{list.teacher.teach_age}}年教龄</span>
+            </p>
         </div>
-        <div>
-          <van-button round type="info">关注</van-button>
+        <div @click="guan(id)">
+          <van-button round type="info" v-show="list.flag == 2">关注</van-button>
+          <van-button round type="info" v-show="list.flag == 1">已关注</van-button>
         </div>
       </div>
     </div>
     <div class="cxy_nav">
       <van-tabs v-model="activeName" title-active-color="#eb6100">
         <van-tab title="讲师介绍" name="a">
-          <el-row>
-            <el-col :span="7">教学年龄</el-col>
-            <el-col :span="17">30年</el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="7">授课价格</el-col>
-            <el-col :span="17">400学习币</el-col>
+          <el-row v-for="(item,index) in jieshao" :key="index">
+            <el-col :span="7">{{item.attr_name}}</el-col>
+            <el-col :span="17" v-for="(i,k) in item.attr_value" :key="k">{{i.attr_value_name}}</el-col>
           </el-row>
           <el-row>
             <el-col :span="7">老师简介</el-col>
-            <el-col :span="17"
-              >杨老师,特级教师.多次被中国数学会评为全国高中数学竞联赛优秀教练员。长期从事名校理科班的数学教学和数学竞赛辅
-              导工作。辅导学生参加全国高中数学联赛有数百人次获全国高中数学联赛一、二、三等奖，数十人被免试保送到清华大学、
-              北京大学等名牌大学学习。十多人获CMO获一、二、三等奖，一人获IMO金牌。
-              特别是近年来大学试行自主招生，有很多同学通过上他的竞赛辅导课进入清华大学、北京大学、上海交通大学等。</el-col
-            >
+            <el-col :span="17">{{intro}}</el-col>
           </el-row>
         </van-tab>
         <van-tab title="主讲课程" name="b">
@@ -94,7 +93,7 @@
 </template>
 
 <script>
-import { gets, getTea, getTeaInfo } from "../util/api";
+import { gets,posts } from "../util/api";
 export default {
   // 组件名称
   name: "demo",
@@ -106,23 +105,42 @@ export default {
   data() {
     return {
       activeName: "a",
-      list: {},
+      list: {},                   //老师详情
+      id:this.$route.query.id,    //传过来的id
+      intro:'',                   //老师简介
+      jieshao:'',                 //老师介绍
     };
   },
   // 计算属性
   computed: {},
   // 侦听器
   watch: {},
-  async mounted() {
-    // console.log(this.$route.query.id)
-    let { data } = await getTea(this.$route.query.id);
-    this.list = data.data.teacher;
-    console.log(this.list);
-    let { data: res } = await getTeaInfo(this.$route.query.id);
-    console.log(res);
+  mounted(){
+    this.shuju()
+    this.hh()
   },
   // 组件方法
-  methods: {},
+  methods: {
+     async shuju(){
+      let { data } = await gets(`teacher/info/${this.id}`);
+      console.log(data)
+      // 老师简介
+      this.intro = data.data.intro
+      this.jieshao = data.data.attr
+      console.log(this.jieshao)
+    },
+    async hh(){
+       let { data: res } = await gets(`teacher/${this.id}`);
+      console.log(res);
+      // 老师详情
+      this.list = res.data
+    },
+    async guan(id){
+    let {data} = await gets(`teacher/collect/${id}`)
+    console.log(data)
+    this.hh()
+  }
+  },
 };
 </script>  
 <style scoped lang="scss">
@@ -183,8 +201,21 @@ header {
     }
   }
   .tea_title {
-    width: 4.22rem;
-    font-size: 0.3rem;
+      
+      flex: 1;
+      :nth-child(1) {
+        height: 0.5rem;
+        line-height: 0.5rem;
+        :nth-child(2) {
+          color: red;
+          font-size: 0.24rem;
+          margin-left: 0.1rem;
+        }
+      }
+      :nth-child(2) {
+        color: #8c8c8c;
+        font-size:0.24rem;
+      }
   }
 }
 .van-tabs {

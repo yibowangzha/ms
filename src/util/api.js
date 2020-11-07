@@ -9,6 +9,9 @@ export function gets(url,data){
 export function posts(url,data){
     return request.post(url,data)
 }
+export function puts(url,data){
+    return request.put(url,data)
+}
 export let getBanner = data => gets('banner')
 export let getTea = data => gets('teacher/'+data)
 export let getTeaInfo = data => gets('teacher/info/'+data)

@@ -2,7 +2,7 @@
   <div id="app">
     <router-view />
     <frame />
-    <loading  v-if="$store.state.isshow"></loading>
+    <!-- <loading  v-if="$store.state.isshow"></loading> -->
   </div>
 </template>
 <script>

@@ -33,4 +33,7 @@ Vue.filter("timefnxq",function(originval){
     const ss = (dt.getSeconds() +'' ).padStart(2,0)
     return `${yy}-${mm}-${dd} ${hh}:${ff}`
   })
+  Vue.filter('val',function(old){
+    return 
+  })
 

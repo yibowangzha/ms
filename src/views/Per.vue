@@ -170,21 +170,26 @@
 <script>
 import Foot from '@/components/Footer.vue';
 import bus from '@/assets/bus';
-import {gets} from '../util/api'
+import {gets,posts} from '../util/api'
 export default {
   data() {
     return {
       active: 5,
       show: null,         //消息显示
       zqd_show1:false,    //图片默认隐藏
+      ggw_gai:this.$route.query,
     };
   },
   created() {},
-  async mounted() {
-      let {data} =await gets('myStudy/2')
-      console.log(data)
+  mounted() {
+    this.fun()
   },
   methods: {
+    async fun(){
+      console.log(this.ggw_gai)
+      let {data} = await posts('login',this.ggw_gai)
+      console.log(data)
+    },
     // 跳转个人信息
     zqd_ge() {
       this.$router.push('/info');

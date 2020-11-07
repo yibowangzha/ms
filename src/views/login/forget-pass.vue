@@ -97,12 +97,13 @@ export default {
           mobile: this.zqd_gai.mobile,
           sms_type: "getPassword",
         });
+        console.log(data)
         this.zqd_show = true;
       } 
     },
     //  确定修改
     async zqd_duanxindeng() {
-      let { data } = await posts("password", this.zqd_gai);
+      let { data } = await posts("password",this.zqd_gai);
       console.log(data);
       if (data.msg == "操作成功") {
         Toast("修改密码成功");

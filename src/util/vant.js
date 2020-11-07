@@ -21,6 +21,7 @@ import {
     List,
     Image as VanImage,
     Overlay,
+    
     Dialog,
     TreeSelect,
     SidebarItem,
@@ -33,6 +34,7 @@ import {
     Pagination,
     CountDown,
     Toast , 
+    Rate ,
 } from 'vant';
 
 import 'vant/lib/index.css';
@@ -69,6 +71,7 @@ Vue.use(CheckboxGroup);
 Vue.use(Field);
 Vue.use(CountDown);
 Vue.use(Toast);
+Vue.use(Rate);
 
 
 

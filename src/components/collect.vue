@@ -3,61 +3,84 @@
       <!-- 表头 -->
       <van-nav-bar title="我的收藏" left-text="" left-arrow @click-left="zqd_go()">
         <template #right>
-           <!-- <span class="zqd_sp">余额明细</span> -->
         </template>
      </van-nav-bar>
-
-         <div class="tad-dan" @click="danxiang">
-            <p class="tad-p1">李老师课堂开课了快来看看</p>
+         <div class="tad-dan" @click="danxiang(item.course_id)" v-for="(item,index) in arr" :key="index">
+              
+            <p class="tad-p1">{{item.title}}</p>
+            <van-icon name="star" size="0.4rem" color="#EB6100" @click.stop="xing(item.collect_id)"/>
             <div class="tad-sj">
-              <p>
-                 <van-icon name="aim" />
-                03月16日 18:30 ~ 03月22日 15:00
-                <van-icon name="down" />
-                </p>
-              <p>共8课时</p>
+              <p>共{{item.section_num}}课时</p>
             </div>
             <div class="tad-tu">
               <div>
-                <img src='../../public/img/0ac5ae20de2db5409b16c4dfa73dfab5.png' alt="">
-                <font>李青</font>
+                <img :src='item.teachersAvatar' alt="">
+                <font>{{item.teachers}}</font>
               </div>
             </div>
             <p class="tad-ren">
-              <span  >134人已报名</span>
-              <font >免费</font>
+              <span>{{item.sales_num}}人已报名</span>
+              <!-- <font>免费</font> -->
+               <font class="free" v-show="item.price == 0">免费</font>
+                <font v-show="item.price == 100">
+                  <img
+                    src="https://msmk2019.oss-cn-shanghai.aliyuncs.com/uploads/image/20191HHDExgz0u1567065946.png"
+                    alt
+                  />
+                  1.00
+                </font>
             </p>
         </div>
-
-
    </div>
 </template>
 
 <script>
+import { gets,posts,puts } from "../util/api";
+import {Toast} from 'Vant'
+
 export default {
    data() {
        return {
-
+         arr:[],
        };
    },
    created() {
 
    },
    mounted() {
-
+      this.shou()
    },
    methods: {
+    //  渲染数据
+     async shou(){
+       let {data} = await gets('collect',{page:1,limit:10,type:1})
+       console.log(data)
+       this.arr = data.data.list
+     },
+    //  取消收藏
+     async xing(id){
+       let {data} = await puts(`collect/cancel/${id}/1`)
+       if(data.code == 200){
+         Toast('取消成功')
+         this.shou()
+       }
+     },
      zqd_go(){
         this.$router.go(-1)
      },
-     danxiang(){
-      this.$router.push('/Course-detail')
+     danxiang(id){
+      this.$router.push('/Course-detail?id='+id)
      }
    }
 };
 </script>
 
 <style scoped>
+.van-icon{
+  position: absolute;
+  top: 0.2rem;
+  right:0.2rem;
+}
 .tad-nei {
   background-color: #f0f2f5;
   padding: 0.3rem;

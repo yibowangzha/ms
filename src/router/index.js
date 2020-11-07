@@ -145,6 +145,15 @@ const routes = [
     }
 
   },
+  {
+    path: '/set-info',
+    name: 'Set-info',
+    component: () => import('../components/set-info.vue'),
+    meta: {
+      title: '信息修改'
+    }
+
+  },
   // 学习详情
   {
     path: '/study-detail',

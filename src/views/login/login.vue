@@ -37,7 +37,7 @@
         <span class="zqd_sp2" @click="zqd_zhuce">注册/验证码登录</span>
       </div>
       <!-- 底部按钮 -->
-      <van-button type="primary" id="zqd" @click="zqd_deng()">登录</van-button>
+      <van-button type="primary" id="zqd" @click="zqd_deng(zqd_deng1.mobile,zqd_deng1.password)">登录</van-button>
     </div>
 
     <!-- 验证码注册登录 -->
@@ -78,7 +78,7 @@
         <span class="zqd_sp2" @click="zqd = 0">使用密码登录</span>
       </div>
       <!-- 底部按钮 -->
-      <van-button type="primary" id="zqd" @click="zqd_duanxindeng"
+      <van-button type="primary" id="zqd" @click="zqd_duanxindeng(zqd_yan.sms_code,zqd_yan.mobile)"
         >登录</van-button
       >
     </div>
@@ -119,12 +119,19 @@ export default {
   mounted() {},
   methods: {
     // 帐号密码登录
-    async zqd_deng() {
+    async zqd_deng(sj,mima) {
       let { data } = await posts("login", this.zqd_deng1);
       console.log(data)
       if (data.msg == "操作成功") {
         localStorage.setItem("token", data.data.remember_token);
-        this.$router.push("/person");
+        this.$router.push({
+          path:'/person',
+          query:{
+            mobile:sj,
+            password:mima,
+            type:1
+          }
+        });
       } else {
         Toast("密码或者手机号有误");
       }
@@ -145,15 +152,16 @@ export default {
         mobile: this.zqd_yan.mobile,
         sms_type: "login",
       });
+      console.log(data);
       if(data.code==200){
       this.zqd_show = false;
       this.$refs.countDown.reset();
       }
-      console.log(data);
-    },
+      },
     // 短信登
-    async zqd_duanxindeng() {
+    async zqd_duanxindeng(code,mobile) {
       // this.$router.push('/person')
+      console.log(code)
       let { data } = await posts( "login",
         this.zqd_yan
       );
@@ -162,9 +170,16 @@ export default {
         localStorage.setItem("token", data.data.remember_token);
       }
       if (data.data.is_new == 1) {
-        this.$router.push("/new");
+        this.$router.push({
+          path:'/new',
+          query:{
+            code:code,
+            mobile:mobile,
+            id:data.data.id
+          }
+        });
       } else {
-        this.$router.push("/info");
+        this.$router.push("/person");
       } 
     },
     //  跳转找回密码

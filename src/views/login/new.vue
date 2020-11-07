@@ -3,7 +3,7 @@
     <header>
         <p></p>
         <div>设置密码</div>
-        <span @click="$router.push('/info')">跳过</span>
+        <span @click="$router.ok('/set-message?id='+this.id)">跳过</span>
     </header>
     <div>
         <input type="text" v-model="pwd" placeholder="请设置登录密码">
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { posts } from "@/util/api";
 export default {
   // 组件名称
   name: 'demo',
@@ -30,6 +31,9 @@ export default {
    return {
        pwd:'',
        pwd2:'',
+       sms_code:this.$route.query.code,
+       mobile:this.$route.query.mobile,
+       id:this.$route.query.id,
    }
   },
   // 计算属性
@@ -38,8 +42,16 @@ export default {
   watch: {},
   // 组件方法
   methods: {
-      ok(){
-          this.$router.push('/info')
+      async ok(){
+          let {data} = await posts('password',{
+              mobile:this.mobile,
+              password:this.pwd2,
+              sms_code:this.sms_code,
+          })
+          console.log(data)
+          if(data.code == 200){
+               this.$router.push('/set-message?id='+this.id)
+          }
       }
   },
 }

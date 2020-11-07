@@ -6,7 +6,7 @@
         <span class="zqd_sp1" @click="zqd_exchange">学习卡兑换</span>
       </template>
     </van-nav-bar>
-    暂无记录
+    
   </div>
 </template>
 

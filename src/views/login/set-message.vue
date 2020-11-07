@@ -2,16 +2,7 @@
     <div>
       <Head></Head>
       <ul class="zqd_ul">
-         <!-- 头像 -->
-         <li>
-            <van-nav-bar  left-text="头像" right-arrow>
-               <template #right>
-                 <!-- <van-icon name="search" size="18" /> -->
-                 <img src="" alt="">
-                 <van-icon name="arrow" size="18" />
-               </template>
-             </van-nav-bar>
-         </li>
+        
          <!-- 昵称 -->
          <li>
             <van-nav-bar  left-text="昵称" right-arrow>
@@ -21,15 +12,7 @@
                </template>
              </van-nav-bar>
          </li>
-          <!-- 手机号 -->
-          <li>
-            <van-nav-bar  left-text="手机号" right-arrow>
-               <template #right>
-                 <span class="zqd_sp">15810195203</span>
-                 <!-- <van-icon name="arrow" size="18" /> -->
-               </template>
-             </van-nav-bar>
-         </li>
+         
          <!-- 性别 -->
          <li>
             <van-nav-bar  left-text="性别" right-arrow>
@@ -76,9 +59,9 @@
              </van-nav-bar>
          </li>
       </ul>
+      <button>提交信息</button>
     </div>
 </template>
-
 <script>
    import Head from '@/components/Header.vue'
 export default {
@@ -105,7 +88,10 @@ export default {
 <style scoped>
 .zqd_ul{
    padding: 0.1rem 0.2rem;
-   margin:0.45rem 0;
+   /* margin:0.45rem 0; */
+}
+.zqd_ul>li{
+  line-height:0.8rem;
 }
 .zqd_ul img{
    width: 0.74rem;
